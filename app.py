@@ -28,29 +28,33 @@ user_input = st.text_area(
 model = joblib.load("phishing_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 if st.button("Analyze Email"):
-        if user_input.strip() != "":
-                    input_vector = vectorizer.transform([user_input])
+
+    if user_input.strip() != "":
+
+        input_vector = vectorizer.transform([user_input])
 
         prediction = model.predict(input_vector)
 
         probability = model.predict_proba(input_vector)[0][1]
-            if prediction[0] == 1:
-                            st.error("⚠️ Phishing Email Detected")
 
-            st.progress(int(probability*100))
+        if prediction[0] == 1:
 
-            st.write(
-                f"Risk Score : {probability*100:.2f}%"
-            )
+            st.error("⚠️ Phishing Email Detected")
+
+            st.progress(int(probability * 100))
+
+            st.write(f"Risk Score: {probability*100:.2f}%")
+
         else:
+
             st.success("✅ Safe Email")
 
-            st.progress(int(probability*100))
+            st.progress(int(probability * 100))
 
-            st.write(
-                f"Risk Score : {probability*100:.2f}%"
-            )
-                else:
+            st.write(f"Risk Score: {probability*100:.2f}%")
+
+    else:
+
         st.warning("Please enter email text.")
 st.divider()
 
